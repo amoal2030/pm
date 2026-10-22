@@ -1,0 +1,6 @@
+{
+  "name": "بروستد مشوار الفرسان",
+  "description": "الموقع الرسمي وقائمة الطعام التفاعلية لمطعم بروستد مشوار الفرسان - حي الفرسان بالدمام. تصفح الأصناف واطلب عبر الواتساب مباشرة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
