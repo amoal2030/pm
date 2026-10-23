@@ -40,7 +40,7 @@ export const FeaturedHighlights: React.FC<FeaturedHighlightsProps> = ({
           >
             <div className="h-44 overflow-hidden relative">
               <img
-                src="./assets/images/broasted_chicken_hero_1792665160048.jpg"
+                src={`${import.meta.env.BASE_URL}assets/images/broasted_chicken_hero_1792665160048.jpg`}
                 alt="بروستد الفرسان"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 referrerPolicy="no-referrer"
@@ -76,7 +76,7 @@ export const FeaturedHighlights: React.FC<FeaturedHighlightsProps> = ({
           >
             <div className="h-44 overflow-hidden relative">
               <img
-                src="./assets/images/mixed_grills_platter_1792665161760.jpg"
+                src={`${import.meta.env.BASE_URL}assets/images/mixed_grills_platter_1792665161760.jpg`}
                 alt="مشويات بالكيلو"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 referrerPolicy="no-referrer"
@@ -112,7 +112,7 @@ export const FeaturedHighlights: React.FC<FeaturedHighlightsProps> = ({
           >
             <div className="h-44 overflow-hidden relative">
               <img
-                src="./assets/images/arabic_shawarma_plate_1792665161698.jpg"
+                src={`${import.meta.env.BASE_URL}assets/images/arabic_shawarma_plate_1792665161698.jpg`}
                 alt="شاورما الفرسان"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 referrerPolicy="no-referrer"
@@ -148,7 +148,7 @@ export const FeaturedHighlights: React.FC<FeaturedHighlightsProps> = ({
           >
             <div className="h-44 overflow-hidden relative">
               <img
-                src="./assets/images/fresh_natural_juices_1792665161919.jpg"
+                src={`${import.meta.env.BASE_URL}assets/images/fresh_natural_juices_1792665161919.jpg`}
                 alt="عصائر طبيعية"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 referrerPolicy="no-referrer"

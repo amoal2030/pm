@@ -56,7 +56,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreMenu }) => {
               </a>
 
               <a
-                href="./assets/aistudio/______________36724bc9.pdf"
+                href={`${import.meta.env.BASE_URL}assets/aistudio/______________36724bc9.pdf`}
                 target="_blank"
                 rel="noreferrer"
                 className="px-4 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-amber-400 border border-slate-300 dark:border-neutral-700 font-bold text-xs sm:text-sm rounded-xl transition-colors flex items-center gap-2 shadow-xs"

@@ -14,6 +14,8 @@ export interface RestaurantInfo {
   workingHours: string;
 }
 
+const BASE = import.meta.env.BASE_URL || '/';
+
 export const RESTAURANT_INFO: RestaurantInfo = {
   name: "بروستد مشوار الفرسان",
   nameEn: "Meshwar Al Forsan Broasted",
@@ -23,7 +25,7 @@ export const RESTAURANT_INFO: RestaurantInfo = {
   whatsappFormatted: "053 011 1352",
   phone1: "0530111352",
   phone2: "0530111352",
-  logo: "./assets/aistudio/image_d5528c1b.png",
+  logo: `${BASE}assets/aistudio/image_d5528c1b.png`,
   address: "محطة بترو هلا - حي الفرسان - طريق الدمام الرياض السريع",
   addressDetails: "الدمام، حي الفرسان، طريق الدمام - الرياض السريع، محطة بترو هلا",
   mapsUrl: "https://maps.app.goo.gl/f5oGGiNFEkMrYZR4A",
