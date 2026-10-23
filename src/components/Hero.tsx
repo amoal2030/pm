@@ -56,7 +56,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreMenu }) => {
               </a>
 
               <a
-                href="/assets/aistudio/______________36724bc9.pdf"
+                href="./assets/aistudio/______________36724bc9.pdf"
                 target="_blank"
                 rel="noreferrer"
                 className="px-4 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-amber-400 border border-slate-300 dark:border-neutral-700 font-bold text-xs sm:text-sm rounded-xl transition-colors flex items-center gap-2 shadow-xs"
@@ -113,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreMenu }) => {
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xl group">
               <img
-                src="/src/assets/images/broasted_chicken_hero_1792665160048.jpg"
+                src="./assets/images/broasted_chicken_hero_1792665160048.jpg"
                 alt="بروستد مشوار الفرسان الذهبي المقرمش"
                 className="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="eager"

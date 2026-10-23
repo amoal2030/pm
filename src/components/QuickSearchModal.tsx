@@ -30,7 +30,7 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
-        inputRef.current?.focus();
+        inputRef.current?.focus({ preventScroll: true });
       }, 50);
     } else {
       setQuery('');

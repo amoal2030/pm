@@ -54,17 +54,17 @@ export const CATEGORIES: Category[] = [
 ];
 
 export const CATEGORY_IMAGES: Record<CategoryId, string> = {
-  broasted: '/src/assets/images/broasted_chicken_hero_1792665160048.jpg',
-  grilled: '/src/assets/images/mixed_grills_platter_1792665161760.jpg',
-  skewers_kg: '/src/assets/images/mixed_grills_platter_1792665161760.jpg',
-  meals: '/src/assets/images/fast_food_burger_meal_1792666977054.jpg',
-  shawarma: '/src/assets/images/arabic_shawarma_plate_1792665161698.jpg',
-  sandwiches: '/src/assets/images/fast_food_burger_meal_1792666977054.jpg',
-  pizza: '/src/assets/images/pizza_italian_style_1792666976146.jpg',
-  pasta: '/src/assets/images/creamy_pasta_bowl_1792666977207.jpg',
-  pies: '/src/assets/images/savory_arabic_pies_1792666976945.jpg',
-  juices: '/src/assets/images/fresh_natural_juices_1792665161919.jpg',
-  hot_drinks: '/src/assets/images/traditional_karak_tea_1792667015269.jpg',
+  broasted: './assets/images/broasted_chicken_hero_1792665160048.jpg',
+  grilled: './assets/images/mixed_grills_platter_1792665161760.jpg',
+  skewers_kg: './assets/images/mixed_grills_platter_1792665161760.jpg',
+  meals: './assets/images/fast_food_burger_meal_1792666977054.jpg',
+  shawarma: './assets/images/arabic_shawarma_plate_1792665161698.jpg',
+  sandwiches: './assets/images/fast_food_burger_meal_1792666977054.jpg',
+  pizza: './assets/images/pizza_italian_style_1792666976146.jpg',
+  pasta: './assets/images/creamy_pasta_bowl_1792666977207.jpg',
+  pies: './assets/images/savory_arabic_pies_1792666976945.jpg',
+  juices: './assets/images/fresh_natural_juices_1792665161919.jpg',
+  hot_drinks: './assets/images/traditional_karak_tea_1792667015269.jpg',
 };
 
 export function getItemImage(item: MenuItem): string {

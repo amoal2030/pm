@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="chickenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="30%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#7c2d12" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Background Circle -->
+  <circle cx="32" cy="32" r="30" fill="url(#bgGrad)"/>
+  <circle cx="32" cy="32" r="28" stroke="#ffffff" stroke-opacity="0.3" stroke-width="2"/>
+  
+  <!-- Crispy Fried Chicken Drumstick Icon -->
+  <g filter="url(#shadow)">
+    <!-- Bone -->
+    <path d="M19 45 L15 49 C13.5 50.5 13.5 52.5 15 54 C16.5 55.5 18.5 55.5 20 54 L24 50" stroke="#fef3c7" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="15" cy="53" r="2.5" fill="#fef3c7"/>
+    <circle cx="19" cy="55" r="2" fill="#fef3c7"/>
+    
+    <!-- Crispy Meat Body -->
+    <path d="M22 47 C18 43 19 33 26 25 C33 17 44 16 48 20 C52 24 51 35 43 42 C35 49 26 51 22 47 Z" fill="url(#chickenGrad)"/>
+    
+    <!-- Crispy Texture Dots / Flakes -->
+    <circle cx="34" cy="24" r="1.5" fill="#78350f" fill-opacity="0.5"/>
+    <circle cx="41" cy="27" r="2" fill="#78350f" fill-opacity="0.4"/>
+    <circle cx="36" cy="33" r="1.5" fill="#fef08a" fill-opacity="0.8"/>
+    <circle cx="43" cy="35" r="1.5" fill="#78350f" fill-opacity="0.4"/>
+    <circle cx="29" cy="37" r="1.5" fill="#78350f" fill-opacity="0.5"/>
+    <circle cx="33" cy="42" r="1.8" fill="#fef08a" fill-opacity="0.7"/>
+    <circle cx="27" cy="30" r="1.2" fill="#fef08a" fill-opacity="0.9"/>
+  </g>
+  
+  <!-- Sparkles -->
+  <path d="M49 13 L50.5 16.5 L54 18 L50.5 19.5 L49 23 L47.5 19.5 L44 18 L47.5 16.5 Z" fill="#ffffff" fill-opacity="0.9"/>
+</svg>

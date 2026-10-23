@@ -15,18 +15,23 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll the active tab into view horizontally inside the scroll container
+  // Auto-scroll the active tab horizontally inside the strip container ONLY (never affects vertical page scroll)
   useEffect(() => {
     if (!scrollContainerRef.current) return;
-    const activeBtn = scrollContainerRef.current.querySelector(
+    const container = scrollContainerRef.current;
+    const activeBtn = container.querySelector(
       `[data-category-id="${activeCategory}"]`
     ) as HTMLElement | null;
 
     if (activeBtn) {
-      activeBtn.scrollIntoView({
+      const containerRect = container.getBoundingClientRect();
+      const btnRect = activeBtn.getBoundingClientRect();
+      // Calculate horizontal offset relative solely to the container
+      const deltaX = (btnRect.left + btnRect.width / 2) - (containerRect.left + containerRect.width / 2);
+      
+      container.scrollBy({
+        left: deltaX,
         behavior: 'smooth',
-        inline: 'center',
-        block: 'nearest',
       });
     }
   }, [activeCategory]);

@@ -57,13 +57,40 @@ const MainContent: React.FC = () => {
     return map;
   }, [items]);
 
-  // Monitor scroll for back to top button
+  // Guard references so Back-to-Top is strictly triggered on explicit intentional click, never accidentally while scrolling or swiping
+  const isScrollingRef = useRef<boolean>(false);
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
+  const isTouchSwipingRef = useRef<boolean>(false);
+  const buttonAppearTimeRef = useRef<number>(0);
+  const prevShowBackToTopRef = useRef<boolean>(false);
+
+  // Monitor scroll for back to top button visibility and track active scrolling
   useEffect(() => {
     const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
+      const shouldShow = window.scrollY > 800;
+      if (shouldShow && !prevShowBackToTopRef.current) {
+        buttonAppearTimeRef.current = Date.now();
+      }
+      prevShowBackToTopRef.current = shouldShow;
+      setShowBackToTop(shouldShow);
+
+      isScrollingRef.current = true;
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 250);
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
   }, []);
 
   // Keyboard shortcut Ctrl+K to open search modal
@@ -85,16 +112,19 @@ const MainContent: React.FC = () => {
     const handleScrollSpy = () => {
       if (isUserClickingRef.current) return;
 
-      const menuEl = document.getElementById('menu');
-      if (!menuEl) return;
+      const firstSection = document.getElementById(`section-${CATEGORIES[0].id}`);
+      if (!firstSection) return;
 
-      // If above the menu, set active to 'all'
-      if (window.scrollY < menuEl.offsetTop - 120) {
-        setActiveCategory('all');
+      const scrollPosition = window.scrollY + 180;
+
+      // If user is scrolled above the menu sections, set active tab to 'all'
+      if (scrollPosition < firstSection.offsetTop) {
+        if (activeCategory !== 'all') {
+          setActiveCategory('all');
+        }
         return;
       }
 
-      const scrollPosition = window.scrollY + 170;
       let detectedCat: CategoryId | 'all' = 'all';
 
       for (const cat of CATEGORIES) {
@@ -109,24 +139,76 @@ const MainContent: React.FC = () => {
         }
       }
 
-      if (detectedCat !== 'all') {
+      if (detectedCat !== 'all' && detectedCat !== activeCategory) {
         setActiveCategory(detectedCat);
       }
     };
 
     window.addEventListener('scroll', handleScrollSpy, { passive: true });
     return () => window.removeEventListener('scroll', handleScrollSpy);
-  }, [filterModeOnly, searchQuery, quickFilter]);
+  }, [filterModeOnly, searchQuery, quickFilter, activeCategory]);
 
+  // Back to top function - ONLY triggered upon explicit, intentional click on the back to top button
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleBackToTopClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // 1. If button appeared less than 450ms ago (user was scrolling when it appeared under their finger), ignore
+    if (Date.now() - buttonAppearTimeRef.current < 450) {
+      return;
+    }
+
+    // 2. If the user was actively scrolling the window within the last 250ms, ignore accidental taps/releases
+    if (isScrollingRef.current) {
+      return;
+    }
+
+    // 3. If finger dragged / swiped across the button, ignore
+    if (isTouchSwipingRef.current) {
+      return;
+    }
+
+    // Explicit intentional click
+    scrollToTop();
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY, time: Date.now() };
+    isTouchSwipingRef.current = false;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLButtonElement>) => {
+    if (!touchStartRef.current) return;
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStartRef.current.x);
+    const dy = Math.abs(touch.clientY - touchStartRef.current.y);
+    // If movement > 7px, this was a scroll or swipe gesture, not a deliberate tap
+    if (dx > 7 || dy > 7) {
+      isTouchSwipingRef.current = true;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (isTouchSwipingRef.current || isScrollingRef.current) {
+      return;
+    }
+    // Clean tap: clear state after click event cycle
+    setTimeout(() => {
+      isTouchSwipingRef.current = false;
+      touchStartRef.current = null;
+    }, 200);
+  };
+
   const scrollToMenu = () => {
-    const menuEl = document.getElementById('menu');
-    if (menuEl) {
-      const yOffset = -85;
-      const y = menuEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    const target = document.getElementById('menu');
+    if (target) {
+      const yOffset = -75;
+      const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
@@ -137,39 +219,39 @@ const MainContent: React.FC = () => {
     isUserClickingRef.current = true;
     setTimeout(() => {
       isUserClickingRef.current = false;
-    }, 900);
+    }, 1100);
 
-    // If currently filtering just one category and user clicked 'all', disable filterModeOnly
+    // If 'all' is clicked: show all sections and scroll smoothly to the start of menu sections
     if (categoryId === 'all') {
-      setFilterModeOnly(false);
-      const menuEl = document.getElementById('menu');
-      if (menuEl) {
-        const yOffset = -85;
-        const y = menuEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      if (filterModeOnly) {
+        setFilterModeOnly(false);
+      }
+      const firstSection = document.getElementById(`section-${CATEGORIES[0].id}`);
+      if (firstSection) {
+        const yOffset = -140;
+        const y = firstSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
       return;
     }
 
-    // If filter mode is on, just stay in filter mode and scroll to top of menu
+    // In single filtered section view: scroll to items display area
     if (filterModeOnly) {
-      const menuEl = document.getElementById('menu');
-      if (menuEl) {
-        const yOffset = -85;
-        const y = menuEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      const itemsContainer = document.getElementById('menu-items-container');
+      if (itemsContainer) {
+        const yOffset = -140;
+        const y = itemsContainer.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
       return;
     }
 
-    // In continuous all-sections mode, smoothly scroll directly to that section!
+    // In sequential all-sections mode: smoothly scroll directly to that specific section
     const targetSection = document.getElementById(`section-${categoryId}`);
     if (targetSection) {
       const yOffset = -140;
       const y = targetSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
-    } else {
-      scrollToMenu();
     }
   };
 
@@ -375,7 +457,7 @@ const MainContent: React.FC = () => {
             </div>
           ) : filterModeOnly && activeCategory !== 'all' ? (
             /* DISPLAY MODE 2: Single Selected Section Only */
-            <div className="space-y-6">
+            <div id="menu-items-container" className="space-y-6">
               {(() => {
                 const categoryObj = CATEGORIES.find((c) => c.id === activeCategory);
                 const itemsInThisCat = MENU_ITEMS.filter((item) => item.category === activeCategory);
@@ -550,12 +632,18 @@ const MainContent: React.FC = () => {
       {/* Floating Bottom Selection Bar matching user's reference */}
       <BottomSelectionBar />
 
-      {/* Back to Top Floating Button */}
+      {/* Back to Top Floating Button - strictly takes user to top ONLY when clicked */}
       {showBackToTop && (
         <button
-          onClick={scrollToTop}
-          className="fixed bottom-20 sm:bottom-24 right-6 z-30 p-3 rounded-full bg-white dark:bg-neutral-900/90 text-amber-600 dark:text-amber-400 border border-slate-200 dark:border-neutral-700 hover:bg-slate-100 dark:hover:bg-neutral-800 transition-all shadow-xl active:scale-95 cursor-pointer"
+          type="button"
+          onClick={handleBackToTopClick}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="fixed bottom-24 right-6 z-30 p-3.5 rounded-full bg-white/95 dark:bg-neutral-900/95 text-amber-600 dark:text-amber-400 border border-slate-200 dark:border-neutral-700 hover:bg-slate-100 dark:hover:bg-neutral-800 transition-all duration-300 shadow-xl active:scale-95 cursor-pointer pointer-events-auto select-none"
+          style={{ touchAction: 'manipulation' }}
           aria-label="العودة لأعلى الصفحة"
+          title="العودة لأعلى الصفحة"
         >
           <ArrowUp className="w-5 h-5" />
         </button>
